@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Shop</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #5e493b;
+            font-family: "Trajan Pro", "Copperplate", "Goudy Old Style", serif;
+            color: #fff;
+            min-height: 100vh;
+        }
+
+        h1, h2, h3 {
+            color: #5a3c00;
+            text-align: center;
+            text-shadow: 3px 3px 4px rgba(0,0,0,0.3);
+        }
+
+        
+        .site-header {
+            background-color: #a79277cc;
+            padding: 15px 20px;
+            border-bottom: 3px solid #271900;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .site-header h1 {
+            font-size: 1.8em;
+            margin-bottom: 0;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            padding: 8px 18px;
+            background-color: #5e493b;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: bold;
+            border: 2px solid #271900;
+            transition: background-color 0.3s;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            background-color: #4CAF50;
+            border-color: #45a049;
+        }
+
+        .shop-subtitle {
+            text-align: center;
+            padding: 10px 20px;
+            color: #a79277;
+            font-size: 1.1em;
+        }
+
+        
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            padding: 20px;
+        }
+
+        .tab-btn {
+            padding: 12px 30px;
+            background-color: #a79277cc;
+            color: #3a2500;
+            border: 2px solid #271900;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            font-family: inherit;
+            transition: background-color 0.3s;
+        }
+
+        .tab-btn:hover,
+        .tab-btn.active {
+            background-color: #4CAF50;
+            color: white;
+            border-color: #45a049;
+        }
+
+        
+        .upload-section {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            display: none;
+        }
+
+        .upload-section.active {
+            display: block;
+        }
+
+        .upload-form {
+            background-color: #a79277cc;
+            border: 2px solid #271900;
+            border-radius: 12px;
+            padding: 25px;
+            animation: slideFromLeft 0.6s forwards;
+        }
+
+        @keyframes slideFromLeft {
+            from {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .upload-form h2 {
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #12da00;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #af9356;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            background-color: #fff8ee;
+        }
+
+        .form-group textarea {
+            height: 100px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            padding: 12px 30px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-family: inherit;
+            font-weight: bold;
+            width: 100%;
+            margin-top: 10px;
+            transition: background-color 0.3s;
+        }
+
+        .submit-btn:hover {
+            background-color: #45a049;
+        }
+
+        .submit-btn:disabled {
+            background-color: #888;
+            cursor: not-allowed;
+        }
+
+        
+        .shop-section {
+            max-width: 1100px;
+            margin: 20px auto;
+            padding: 20px;
+            display: none;
+        }
+
+        .shop-section.active {
+            display: block;
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            padding: 10px;
+        }
+
+        .game-card {
+            background-color: #a79277cc;
+            border: 2px solid #271900;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(109, 58, 0, 0.5);
+            transition: transform 0.2s, box-shadow 0.2s;
+            animation: fadeIn 0.5s forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .game-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(109, 58, 0, 0.7);
+        }
+
+        .game-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            background-color: #5e493b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #a79277;
+            font-size: 3em;
+        }
+
+        .game-image img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+
+        .game-info {
+            padding: 15px;
+        }
+
+        .game-info h3 {
+            color: #3a2500;
+            margin-bottom: 8px;
+            font-size: 1.2em;
+        }
+
+        .game-info p {
+            color: #4a3520;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+
+        .game-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .game-price {
+            color: #12da00;
+            font-size: 1.3em;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .game-author {
+            color: #6b5030;
+            font-size: 0.85em;
+        }
+
+        .buy-btn {
+            padding: 10px 25px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-family: inherit;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .buy-btn:hover {
+            background-color: #45a049;
+        }
+
+        /* Messages */
+        .message {
+            text-align: center;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-weight: bold;
+            display: none;
+        }
+
+        .message.success {
+            background-color: #4CAF50;
+            color: white;
+            display: block;
+        }
+
+        .message.error {
+            background-color: #e74c3c;
+            color: white;
+            display: block;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #a79277;
+        }
+
+        .empty-state p {
+            font-size: 1.2em;
+            margin-bottom: 15px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #a79277;
+            font-size: 1.1em;
+        }
+
+        
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background-color: #a79277;
+            border: 3px solid #271900;
+            border-radius: 12px;
+            padding: 30px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .modal h3 {
+            margin-bottom: 15px;
+        }
+
+        .modal p {
+            color: #3a2500;
+            margin-bottom: 20px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .modal-buttons button {
+            padding: 10px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-family: inherit;
+            font-weight: bold;
+        }
+
+        .confirm-btn {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .cancel-btn {
+            background-color: #888;
+            color: white;
+        }
+
+        @media (max-width: 500px) {
+            .site-header { flex-direction: column; text-align: center; }
+            .nav-links { justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="site-header">
+        <h1>Game Shop</h1>
+        <nav class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="suivant.html" class="active">Shop</a>
+            <a href="settings.html">Settings</a>
+        </nav>
+    </header>
+    <p class="shop-subtitle">Upload your games and discover new ones!</p>
+
+    <div class="tabs">
+        <button class="tab-btn active" onclick="showTab('shop')">Browse Games</button>
+        <button class="tab-btn" onclick="showTab('upload')">Upload Your Game</button>
+    </div>
+
+    
+    <div class="shop-section active" id="shop-tab">
+        <h2 style="color:#12da00; margin-bottom:20px;">Available Games</h2>
+        <div id="games-loading" class="loading">Loading games...</div>
+        <div id="games-grid" class="games-grid"></div>
+        <div id="empty-state" class="empty-state" style="display:none;">
+            <p>No games uploaded yet!</p>
+            <p>Be the first to upload a game.</p>
+            <button class="tab-btn" onclick="showTab('upload')">Upload a Game</button>
+        </div>
+    </div>
+
+    
+    <div class="upload-section" id="upload-tab">
+        <div class="upload-form">
+            <h2>Upload Your Game</h2>
+            <div id="upload-message" class="message"></div>
+            <form id="game-form" onsubmit="uploadGame(event)">
+                <div class="form-group">
+                    <label for="game-title">Game Title</label>
+                    <input type="text" id="game-title" name="title" required placeholder="Enter your game name">
+                </div>
+                <div class="form-group">
+                    <label for="game-description">Description</label>
+                    <textarea id="game-description" name="description" required placeholder="Describe your game..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="game-price">Price ($)</label>
+                    <input type="number" id="game-price" name="price" min="0" step="0.01" required placeholder="9.99">
+                </div>
+                <div class="form-group">
+                    <label for="game-author">Your Name</label>
+                    <input type="text" id="game-author" name="author" required placeholder="Your name">
+                </div>
+                <div class="form-group">
+                    <label for="game-image">Game Image (screenshot)</label>
+                    <input type="file" id="game-image" name="image" accept="image/*">
+                </div>
+                <button type="submit" class="submit-btn" id="upload-btn">Upload Game</button>
+            </form>
+        </div>
+    </div>
+
+    
+    <div class="modal-overlay" id="buy-modal">
+        <div class="modal">
+            <h3>Confirm Purchase</h3>
+            <p id="buy-modal-text"></p>
+            <div class="modal-buttons">
+                <button class="confirm-btn" id="confirm-buy-btn">Buy Now</button>
+                <button class="cancel-btn" onclick="closeBuyModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        
+        function showTab(tab) {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('shop-tab').classList.remove('active');
+            document.getElementById('upload-tab').classList.remove('active');
+
+            if (tab === 'shop') {
+                document.getElementById('shop-tab').classList.add('active');
+                document.querySelectorAll('.tab-btn')[0].classList.add('active');
+                loadGames();
+            } else {
+                document.getElementById('upload-tab').classList.add('active');
+                document.querySelectorAll('.tab-btn')[1].classList.add('active');
+            }
+        }
+
+        
+        async function uploadGame(e) {
+            e.preventDefault();
+            const btn = document.getElementById('upload-btn');
+            const msg = document.getElementById('upload-message');
+            btn.disabled = true;
+            btn.textContent = 'Uploading...';
+            msg.className = 'message';
+            msg.style.display = 'none';
+
+            const formData = new FormData(document.getElementById('game-form'));
+
+            try {
+                const response = await fetch('/.netlify/functions/upload-game', {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    msg.textContent = 'Game uploaded successfully!';
+                    msg.className = 'message success';
+                    document.getElementById('game-form').reset();
+                } else {
+                    msg.textContent = data.error || 'Upload failed';
+                    msg.className = 'message error';
+                }
+            } catch (err) {
+                msg.textContent = 'Error: Could not upload game';
+                msg.className = 'message error';
+            }
+
+            btn.disabled = false;
+            btn.textContent = 'Upload Game';
+        }
+
+        
+        async function loadGames() {
+            const grid = document.getElementById('games-grid');
+            const loading = document.getElementById('games-loading');
+            const emptyState = document.getElementById('empty-state');
+
+            loading.style.display = 'block';
+            grid.innerHTML = '';
+            emptyState.style.display = 'none';
+
+            try {
+                const response = await fetch('/.netlify/functions/list-games');
+                const data = await response.json();
+
+                loading.style.display = 'none';
+
+                if (!data.games || data.games.length === 0) {
+                    emptyState.style.display = 'block';
+                    return;
+                }
+
+                data.games.forEach(game => {
+                    const card = document.createElement('div');
+                    card.className = 'game-card';
+
+                    const imageHtml = game.imageKey
+                        ? `<div class="game-image"><img src="/.netlify/functions/game-image?key=${encodeURIComponent(game.imageKey)}" alt="${escapeHtml(game.title)}"></div>`
+                        : `<div class="game-image">&#127918;</div>`;
+
+                    const priceText = game.price === 0 ? 'FREE' : '$' + game.price.toFixed(2);
+
+                    card.innerHTML = `
+                        ${imageHtml}
+                        <div class="game-info">
+                            <h3>${escapeHtml(game.title)}</h3>
+                            <p>${escapeHtml(game.description)}</p>
+                            <div class="game-author">By ${escapeHtml(game.author)}</div>
+                            <div class="game-meta">
+                                <span class="game-price">${priceText}</span>
+                                <button class="buy-btn" onclick="openBuyModal('${escapeHtml(game.title)}', ${game.price})">Buy</button>
+                            </div>
+                        </div>
+                    `;
+
+                    grid.appendChild(card);
+                });
+            } catch (err) {
+                loading.style.display = 'none';
+                emptyState.style.display = 'block';
+                emptyState.querySelector('p').textContent = 'Could not load games. Please try again.';
+            }
+        }
+
+        
+        function openBuyModal(title, price) {
+            const priceText = price === 0 ? 'FREE' : '$' + price.toFixed(2);
+            document.getElementById('buy-modal-text').textContent =
+                `Do you want to buy "${title}" for ${priceText}?`;
+            document.getElementById('buy-modal').classList.add('active');
+
+            document.getElementById('confirm-buy-btn').onclick = function () {
+                closeBuyModal();
+                alert('Thank you for your purchase of "' + title + '"! Your game will be available soon.');
+            };
+        }
+
+        function closeBuyModal() {
+            document.getElementById('buy-modal').classList.remove('active');
+        }
+
+        
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        
+        loadGames();
+    </script>
+
+</body>
+</html>

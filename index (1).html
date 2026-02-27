@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Achref's Web</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: #5e493b;
+            font-family: "Trajan Pro", "Copperplate", "Goudy Old Style", serif;
+            color: #fff;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .site-header {
+            background-color: #a79277cc;
+            padding: 15px 20px;
+            border-bottom: 3px solid #271900;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .site-header h1 {
+            color: #5a3c00;
+            font-size: 1.8em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            margin: 0;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            padding: 8px 18px;
+            background-color: #5e493b;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: bold;
+            border: 2px solid #271900;
+            transition: background-color 0.3s;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            background-color: #4CAF50;
+            border-color: #45a049;
+        }
+
+        /* Headings */
+        h1, h2, h3 {
+            color: #5a3c00;
+            text-align: center;
+            text-shadow: 3px 3px 4px rgba(0,0,0,0.3);
+        }
+
+        /* Blocks */
+        .block {
+            width: 90%;
+            max-width: 500px;
+            padding: 25px;
+            border-radius: 12px;
+            border: 2px solid #444;
+            box-shadow: 0 4px 8px rgb(109, 58, 0);
+            background-color: #a79277cc;
+            text-align: center;
+            margin: 30px auto;
+        }
+
+        .block p {
+            color: #3a2500;
+            margin-top: 10px;
+            line-height: 1.5;
+        }
+
+        /* Welcome */
+        .welcome-block {
+            width: 90%;
+            max-width: 500px;
+            padding: 30px;
+            border-radius: 12px;
+            border: 2px solid #444;
+            box-shadow: 0 4px 8px rgb(109, 58, 0);
+            background-color: #a79277cc;
+            text-align: center;
+            margin: 30px auto;
+            transform: translateY(-30px);
+            opacity: 0;
+            animation: slideDown 0.6s forwards;
+        }
+
+        @keyframes slideDown {
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .welcome-block h2 {
+            font-size: 2em;
+            margin-bottom: 8px;
+        }
+
+        .welcome-block p {
+            color: #3a2500;
+            font-size: 1.1em;
+        }
+
+        /* Auth section */
+        .auth-section {
+            width: 90%;
+            max-width: 500px;
+            margin: 30px auto;
+            transform: translateX(-50px);
+            opacity: 0;
+            animation: slideRight 0.6s 0.2s forwards;
+        }
+
+        @keyframes slideRight {
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .auth-tabs {
+            display: flex;
+            gap: 0;
+            margin-bottom: 0;
+        }
+
+        .auth-tabs button {
+            flex: 1;
+            padding: 12px;
+            background-color: #5e493b;
+            color: #a79277;
+            border: 2px solid #271900;
+            border-bottom: none;
+            border-radius: 12px 12px 0 0;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            font-family: inherit;
+            transition: background-color 0.3s;
+        }
+
+        .auth-tabs button.active {
+            background-color: #a79277cc;
+            color: #5a3c00;
+        }
+
+        .auth-form {
+            display: none;
+            background-color: #a79277cc;
+            border: 2px solid #271900;
+            border-radius: 0 0 12px 12px;
+            padding: 25px;
+        }
+
+        .auth-form.active { display: block; }
+
+        .auth-form fieldset {
+            border: none;
+            padding: 0;
+        }
+
+        .auth-form legend {
+            font-size: 1.3em;
+            color: #5a3c00;
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        }
+
+        .form-row {
+            margin-bottom: 12px;
+        }
+
+        .form-row label {
+            display: block;
+            color: #12da00;
+            font-weight: bold;
+            margin-bottom: 4px;
+            font-size: 14px;
+        }
+
+        .form-row input[type="text"],
+        .form-row input[type="email"],
+        .form-row input[type="password"],
+        .form-row input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #af9356;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            background-color: #fff8ee;
+        }
+
+        .form-row input:focus {
+            outline: none;
+            border-color: #4CAF50;
+            box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+        }
+
+        .checkbox-group, .radio-group {
+            margin: 15px 0;
+            padding: 10px;
+            background-color: rgba(94, 73, 59, 0.3);
+            border-radius: 8px;
+        }
+
+        .checkbox-group p, .radio-group p {
+            color: #5a3c00;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .checkbox-group label, .radio-group label {
+            display: block;
+            color: #3a2500;
+            padding: 4px 0;
+            font-size: 14px;
+        }
+
+        .checkbox-group input, .radio-group input {
+            margin-right: 8px;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-family: inherit;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .btn-primary { background-color: #4CAF50; }
+        .btn-primary:hover { background-color: #45a049; }
+        .btn-danger { background-color: #e74c3c; }
+        .btn-danger:hover { background-color: #c0392b; }
+
+        .btn-row {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .btn-row .btn { flex: 1; }
+
+        .auth-message {
+            text-align: center;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            font-weight: bold;
+            display: none;
+        }
+
+        .auth-message.success { display: block; background-color: #4CAF50; color: white; }
+        .auth-message.error { display: block; background-color: #e74c3c; color: white; }
+
+        /* About */
+        .about-block {
+            width: 90%;
+            max-width: 500px;
+            padding: 25px;
+            border-radius: 12px;
+            border: 2px solid #444;
+            box-shadow: 0 4px 8px rgb(109, 58, 0);
+            background-color: #a79277cc;
+            text-align: center;
+            margin: 30px auto;
+        }
+
+        .about-block p {
+            color: #3a2500;
+            margin-top: 10px;
+            line-height: 1.6;
+            font-size: 0.95em;
+        }
+
+        .about-block .contact-email {
+            color: #12da00;
+            font-weight: bold;
+            font-size: 1em;
+        }
+
+        /* Donation */
+        .donation-block {
+            width: 90%;
+            max-width: 500px;
+            padding: 25px;
+            border-radius: 12px;
+            border: 5px solid #6dff48;
+            box-shadow: 0 10px 15px rgb(0, 255, 136);
+            background-color: #518300cc;
+            text-align: center;
+            margin: 30px auto;
+        }
+
+        .donation-block h2 {
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.4);
+        }
+
+        .donation-block p {
+            color: #e0ffe0;
+            margin: 10px 0 15px;
+        }
+
+        .donation-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .donate-btn {
+            padding: 12px 30px;
+            background-color: #4CAF50;
+            color: white;
+            border: 2px solid #fff;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-family: inherit;
+            font-weight: bold;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .donate-btn:hover {
+            background-color: #45a049;
+            transform: scale(1.05);
+        }
+
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.active { display: flex; }
+
+        .modal {
+            background-color: #a79277;
+            border: 3px solid #271900;
+            border-radius: 12px;
+            padding: 30px;
+            max-width: 420px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .modal h3 {
+            margin-bottom: 15px;
+            color: #5a3c00;
+        }
+
+        .modal p {
+            color: #3a2500;
+            margin-bottom: 15px;
+        }
+
+        .modal input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #af9356;
+            border-radius: 8px;
+            font-size: 16px;
+            font-family: inherit;
+            background-color: #fff8ee;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .modal-buttons button {
+            padding: 10px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-family: inherit;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .confirm-btn { background-color: #4CAF50; color: white; }
+        .confirm-btn:hover { background-color: #45a049; }
+        .cancel-btn { background-color: #888; color: white; }
+        .cancel-btn:hover { background-color: #666; }
+
+        /* Thanks message after donation */
+        .donation-thanks {
+            display: none;
+            margin-top: 15px;
+            padding: 12px;
+            background-color: rgba(255,255,255,0.2);
+            border-radius: 8px;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .donation-thanks.show { display: block; }
+
+        /* Logged-in banner */
+        .logged-in-banner {
+            display: none;
+            width: 90%;
+            max-width: 500px;
+            margin: 20px auto;
+            padding: 15px;
+            background-color: #4CAF50;
+            border-radius: 8px;
+            text-align: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .logged-in-banner.show { display: block; }
+
+        .logged-in-banner a {
+            color: #fff;
+            text-decoration: underline;
+            margin-left: 10px;
+        }
+
+        /* Responsive */
+        @media (max-width: 500px) {
+            .site-header { flex-direction: column; text-align: center; }
+            .nav-links { justify-content: center; }
+            .btn-row { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="site-header">
+        <h1>Achref's Web</h1>
+        <nav class="nav-links">
+            <a href="index.html" class="active">Home</a>
+            <a href="suivant.html">Shop</a>
+            <a href="settings.html">Settings</a>
+        </nav>
+    </header>
+
+    <!-- Welcome -->
+    <div class="welcome-block">
+        <h2>Welcome</h2>
+        <p>The honor of entering my shop</p>
+    </div>
+
+    <!-- Logged-in banner -->
+    <div class="logged-in-banner" id="logged-in-banner">
+        You are logged in as <span id="logged-in-name"></span>.
+        <a href="#" onclick="logout(); return false;">Log out</a>
+    </div>
+
+    <!-- Auth Section -->
+    <div class="auth-section" id="auth-section">
+        <div class="auth-tabs">
+            <button class="active" onclick="showAuthTab('login')">Login</button>
+            <button onclick="showAuthTab('register')">Register</button>
+        </div>
+
+        <!-- Login Form -->
+        <form id="login-form" class="auth-form active" onsubmit="handleLogin(event)">
+            <fieldset>
+                <legend>Login</legend>
+                <div id="login-message" class="auth-message"></div>
+                <div class="form-row">
+                    <label for="login-email">Email</label>
+                    <input type="email" id="login-email" required placeholder="your@email.com">
+                </div>
+                <div class="form-row">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" required placeholder="Your password" minlength="4">
+                </div>
+                <div class="btn-row">
+                    <button type="submit" class="btn btn-primary">Login</button>
+                </div>
+            </fieldset>
+        </form>
+
+        <!-- Register Form -->
+        <form id="register-form" class="auth-form" onsubmit="handleRegister(event)">
+            <fieldset>
+                <legend>Register</legend>
+                <div id="register-message" class="auth-message"></div>
+                <div class="form-row">
+                    <label for="reg-name">Name</label>
+                    <input type="text" id="reg-name" required placeholder="Your name">
+                </div>
+                <div class="form-row">
+                    <label for="reg-fname">Family name</label>
+                    <input type="text" id="reg-fname" required placeholder="Your family name">
+                </div>
+                <div class="form-row">
+                    <label for="reg-age">Age</label>
+                    <input type="number" id="reg-age" min="1" max="120" required placeholder="Your age">
+                </div>
+                <div class="form-row">
+                    <label for="reg-email">Email</label>
+                    <input type="email" id="reg-email" required placeholder="your@email.com">
+                </div>
+                <div class="form-row">
+                    <label for="reg-password">Password</label>
+                    <input type="password" id="reg-password" required placeholder="Choose a password" minlength="4">
+                </div>
+                <div class="form-row">
+                    <label for="reg-confirm">Confirm password</label>
+                    <input type="password" id="reg-confirm" required placeholder="Confirm your password" minlength="4">
+                </div>
+
+                <div class="checkbox-group">
+                    <p>Your interests:</p>
+                    <label><input type="checkbox" name="interests" value="physics"> Physics</label>
+                    <label><input type="checkbox" name="interests" value="math"> Math</label>
+                    <label><input type="checkbox" name="interests" value="webdev"> CSS / HTML / JavaScript</label>
+                    <label><input type="checkbox" name="interests" value="python"> Python</label>
+                </div>
+
+                <div class="radio-group">
+                    <p>Why are you joining?</p>
+                    <label><input type="radio" name="motivation" value="games" required> Free games I'm developing</label>
+                    <label><input type="radio" name="motivation" value="adventure"> Just for adventure</label>
+                    <label><input type="radio" name="motivation" value="info"> To know more about me</label>
+                </div>
+
+                <div class="btn-row">
+                    <button type="reset" class="btn btn-danger">Clear</button>
+                    <button type="submit" class="btn btn-primary">Register</button>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+
+    <!-- About -->
+    <div class="about-block">
+        <h3>About Me</h3>
+        <p>I am a curious and determined person who is always looking for ways to improve myself. I enjoy learning new things, especially about technology and strategy, and I like challenging myself to grow mentally and emotionally. I value discipline, self-development, and independence. Even when I face difficulties, I try to stay focused on my goals and keep moving forward. I believe that success comes from consistency, patience, and the willingness to learn from mistakes.</p>
+        <p>For any contact, that's my email:</p>
+        <p class="contact-email">aziziachref@02.com</p>
+    </div>
+
+    <!-- Donation -->
+    <div class="donation-block">
+        <h2>Donation</h2>
+        <p>You can support us with money to continue developing this web</p>
+        <div class="donation-buttons">
+            <button class="donate-btn" onclick="openDonation('PayPal')">PayPal</button>
+            <button class="donate-btn" onclick="openDonation('Insta Pay')">Insta Pay</button>
+        </div>
+        <div class="donation-thanks" id="donation-thanks">Thank you for your generous support!</div>
+    </div>
+
+    <!-- Thanks -->
+    <div class="block">
+        <h3>Thanks for your time</h3>
+        <p>I want to thank myself first for the sacrifices I made, and I want to thank my parents and my friend Iyed.</p>
+    </div>
+
+    <!-- Donation Modal -->
+    <div class="modal-overlay" id="donation-modal">
+        <div class="modal">
+            <h3 id="donation-modal-title">Donate via PayPal</h3>
+            <p>Enter the amount you'd like to donate:</p>
+            <input type="number" id="donation-amount" min="1" step="0.01" placeholder="$5.00" value="5">
+            <p id="donation-method-info" style="font-size: 0.9em; color: #6b5030;"></p>
+            <div class="modal-buttons">
+                <button class="confirm-btn" onclick="confirmDonation()">Donate</button>
+                <button class="cancel-btn" onclick="closeDonation()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentDonationMethod = '';
+
+        // Check login state on page load
+        function checkLoginState() {
+            const user = JSON.parse(localStorage.getItem('achref_user') || 'null');
+            if (user) {
+                document.getElementById('logged-in-banner').classList.add('show');
+                document.getElementById('logged-in-name').textContent = user.name;
+                document.getElementById('auth-section').style.display = 'none';
+            }
+        }
+
+        // Auth tab switching
+        function showAuthTab(tab) {
+            document.querySelectorAll('.auth-tabs button').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
+
+            if (tab === 'login') {
+                document.querySelectorAll('.auth-tabs button')[0].classList.add('active');
+                document.getElementById('login-form').classList.add('active');
+            } else {
+                document.querySelectorAll('.auth-tabs button')[1].classList.add('active');
+                document.getElementById('register-form').classList.add('active');
+            }
+        }
+
+        // Show message helper
+        function showMessage(elementId, text, type) {
+            const el = document.getElementById(elementId);
+            el.textContent = text;
+            el.className = 'auth-message ' + type;
+            setTimeout(() => { el.className = 'auth-message'; }, 5000);
+        }
+
+        // Login handler
+        function handleLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value.trim();
+            const password = document.getElementById('login-password').value;
+
+            const users = JSON.parse(localStorage.getItem('achref_users') || '[]');
+            const user = users.find(u => u.email === email && u.password === password);
+
+            if (!user) {
+                showMessage('login-message', 'Invalid email or password.', 'error');
+                return;
+            }
+
+            localStorage.setItem('achref_user', JSON.stringify(user));
+            showMessage('login-message', 'Login successful! Redirecting...', 'success');
+            setTimeout(() => { window.location.href = 'suivant.html'; }, 1000);
+        }
+
+        // Register handler
+        function handleRegister(e) {
+            e.preventDefault();
+            const name = document.getElementById('reg-name').value.trim();
+            const fname = document.getElementById('reg-fname').value.trim();
+            const age = parseInt(document.getElementById('reg-age').value);
+            const email = document.getElementById('reg-email').value.trim();
+            const password = document.getElementById('reg-password').value;
+            const confirm = document.getElementById('reg-confirm').value;
+
+            if (password !== confirm) {
+                showMessage('register-message', 'Passwords do not match.', 'error');
+                return;
+            }
+
+            if (password.length < 4) {
+                showMessage('register-message', 'Password must be at least 4 characters.', 'error');
+                return;
+            }
+
+            const interests = [];
+            document.querySelectorAll('input[name="interests"]:checked').forEach(cb => {
+                interests.push(cb.value);
+            });
+
+            const motivationEl = document.querySelector('input[name="motivation"]:checked');
+            const motivation = motivationEl ? motivationEl.value : '';
+
+            const users = JSON.parse(localStorage.getItem('achref_users') || '[]');
+
+            if (users.find(u => u.email === email)) {
+                showMessage('register-message', 'An account with this email already exists.', 'error');
+                return;
+            }
+
+            const user = { name, fname, age, email, password, interests, motivation, createdAt: new Date().toISOString() };
+            users.push(user);
+            localStorage.setItem('achref_users', JSON.stringify(users));
+            localStorage.setItem('achref_user', JSON.stringify(user));
+
+            showMessage('register-message', 'Account created! Redirecting...', 'success');
+            setTimeout(() => { window.location.href = 'suivant.html'; }, 1000);
+        }
+
+        // Logout
+        function logout() {
+            localStorage.removeItem('achref_user');
+            window.location.reload();
+        }
+
+        // Donation modal
+        function openDonation(method) {
+            currentDonationMethod = method;
+            document.getElementById('donation-modal-title').textContent = 'Donate via ' + method;
+            document.getElementById('donation-method-info').textContent =
+                'You will be able to complete your ' + method + ' payment after confirming.';
+            document.getElementById('donation-amount').value = '5';
+            document.getElementById('donation-modal').classList.add('active');
+        }
+
+        function closeDonation() {
+            document.getElementById('donation-modal').classList.remove('active');
+        }
+
+        function confirmDonation() {
+            const amount = parseFloat(document.getElementById('donation-amount').value);
+            if (!amount || amount <= 0) {
+                alert('Please enter a valid amount.');
+                return;
+            }
+            closeDonation();
+            const thanks = document.getElementById('donation-thanks');
+            thanks.textContent = 'Thank you for your $' + amount.toFixed(2) + ' donation via ' + currentDonationMethod + '!';
+            thanks.classList.add('show');
+            setTimeout(() => { thanks.classList.remove('show'); }, 8000);
+        }
+
+        // Init
+        checkLoginState();
+    </script>
+
+</body>
+</html>
